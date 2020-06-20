@@ -45,6 +45,7 @@ import org.wso2.carbon.identity.event.IdentityEventConstants;
 import org.wso2.carbon.identity.event.IdentityEventException;
 import org.wso2.carbon.identity.event.event.Event;
 import org.wso2.carbon.identity.governance.IdentityGovernanceException;
+import org.wso2.carbon.identity.governance.IdentityGovernanceUtil;
 import org.wso2.carbon.identity.governance.IdentityMgtConstants;
 import org.wso2.carbon.identity.governance.exceptions.notiification.NotificationChannelManagerClientException;
 import org.wso2.carbon.identity.governance.exceptions.notiification.NotificationChannelManagerException;
@@ -298,6 +299,38 @@ public class UserSelfRegistrationManager {
             // Populate the key variable in response bean to maintain backward compatibility.
             notificationResponseBean.setKey(secretKey);
         }
+        return notificationResponseBean;
+    }
+
+    /**
+     * Build the notification response bean for lite user registration.
+     *
+     * @param user             User
+     * @return NotificationResponseBean object
+     * @throws IdentityRecoveryException Error while building the response.
+     */
+    private NotificationResponseBean buildLiteNotificationResponseBean(User user) throws IdentityRecoveryException {
+
+        NotificationResponseBean notificationResponseBean = new NotificationResponseBean(user);
+
+        UserRecoveryDataStore userRecoveryDataStore = JDBCRecoveryDataStore.getInstance();
+        userRecoveryDataStore.invalidate(user);
+
+        String secretKey = UUIDGenerator.generateUUID();
+        UserRecoveryData recoveryDataDO = new UserRecoveryData(user, secretKey, RecoveryScenarios.TENANT_LITE_SIGN_UP,
+                RecoverySteps.UPDATE_PASSWORD);
+        recoveryDataDO.setRemainingSetIds(NotificationChannels.EXTERNAL_CHANNEL.getChannelType());
+
+        userRecoveryDataStore.store(recoveryDataDO);
+        notificationResponseBean.setCode(IdentityRecoveryConstants.SuccessEvents.
+                SUCCESS_STATUS_CODE_SUCCESSFUL_USER_CREATION_EXTERNAL_VERIFICATION.getCode());
+        notificationResponseBean.setMessage(IdentityRecoveryConstants.SuccessEvents.
+                SUCCESS_STATUS_CODE_SUCCESSFUL_USER_CREATION_EXTERNAL_VERIFICATION.getMessage());
+        notificationResponseBean.setRecoveryId(secretKey);
+        notificationResponseBean.setNotificationChannel(NotificationChannels.EXTERNAL_CHANNEL.getChannelType());
+
+        // Populate the key variable in response bean to maintain backward compatibility.
+        notificationResponseBean.setKey(secretKey);
         return notificationResponseBean;
     }
 

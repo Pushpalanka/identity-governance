@@ -623,6 +623,22 @@ public class Utils {
         return callbackURL;
     }
 
+    public static boolean getIsTenantFlow(org.wso2.carbon.identity.recovery.model.Property[] properties) {
+
+        if (properties == null) {
+            return false;
+        }
+        boolean isTenantFlow = false;
+        for (org.wso2.carbon.identity.recovery.model.Property property : properties) {
+            if (IdentityRecoveryConstants.IS_TENANT_FLOW.equals(property.getKey())) {
+                isTenantFlow = Boolean.parseBoolean(property.getValue());
+                break;
+            }
+        }
+
+        return isTenantFlow;
+    }
+
     public static String getCallbackURL(org.wso2.carbon.identity.recovery.model.Property[] properties)
             throws UnsupportedEncodingException, URISyntaxException {
 

@@ -95,6 +95,7 @@ public class IdentityRecoveryConstants {
     public static final String EXECUTE_ACTION = "ui.execute";
     public static final String UTF_8 = "UTF-8";
     public static final String CALLBACK = "callback";
+    public static final String IS_TENANT_FLOW = "isTenantFlow";
     public static final String DEFAULT_CALLBACK_REGEX = ".*";
     public static final String IS_USER_PORTAL_URL = "isUserPortalURL";
     public static final String NOTIFY_CHANNEL_LIST_SEPARATOR = ",";
@@ -217,6 +218,8 @@ public class IdentityRecoveryConstants {
                 "User specified communication channel does not have any value"),
         ERROR_CODE_BAD_SELF_REGISTER_REQUEST("USR-10003",
                 "Bad Request"),
+        ERROR_CODE_UNSUPPORTED_SELF_REGISTER_LITE_REQUEST("USR-10004",
+                "Lite self registration is not supported."),
 
         // UAV - User Account Verification.
         ERROR_CODE_UNSUPPORTED_VERIFICATION_CHANNEL("UAV-10001",

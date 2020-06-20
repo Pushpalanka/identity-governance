@@ -3,11 +3,12 @@
     <import resource="classpath:META-INF/cxf/cxf.xml"/>
     <context:property-placeholder/>
     <context:annotation-config/>
-    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer"/>
+    <bean class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer"/>
     <bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer"/>
     <jaxrs:server id="services" address="/">
         <jaxrs:serviceBeans>
             <bean class="org.wso2.carbon.identity.user.endpoint.MeApi"/>
+            <bean class="org.wso2.carbon.identity.user.endpoint.MeLiteApi"/>
             <bean class="org.wso2.carbon.identity.user.endpoint.PiInfoApi"/>
             <bean class="org.wso2.carbon.identity.user.endpoint.ResendCodeApi"/>
             <bean class="org.wso2.carbon.identity.user.endpoint.UpdateUsernameApi"/>
@@ -17,7 +18,6 @@
         </jaxrs:serviceBeans>
         <jaxrs:providers>
             <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
-            <bean class="org.wso2.carbon.identity.user.endpoint.exceptions.UserEndpointExceptionMapper"/>
         </jaxrs:providers>
     </jaxrs:server>
 </beans>
